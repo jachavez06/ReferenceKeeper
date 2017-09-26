@@ -13,7 +13,16 @@ w.resize(320, 240)
  
 # Set window title
 w.setWindowTitle("Hello World!")
+
+# -----
+# Get filename using QFileDialog
+filename = QFileDialog.getOpenFileName(w, 'Open File', '/')
+print filename
  
+# print file contents
+with open(filename, 'r') as f:
+    print(f.read())
+# -----
 # Show window
 w.show()
  
