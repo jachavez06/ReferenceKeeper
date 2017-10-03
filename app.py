@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
 import sys
-from PyQt4 import QtGui, QtCore
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QVBoxLayout,
+                             QPushButton, QFileDialog)
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -20,26 +22,32 @@ class MainWindow(QtGui.QMainWindow):
         self.setWindowTitle('Statusbar')
         
         # Add layout
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         
         # Button
-        self.button = QtGui.QPushButton('Test', self)
+        self.button = QPushButton('Test', self)
         self.button.clicked.connect(self.close)
         layout.addWidget(self.button)
         
         # Open File Button
-        self.ofile_button = QtGui.QPushButton('Open', self)
+        self.ofile_button = QPushButton('Open', self)
         self.ofile_button.move(100,0)
         self.ofile_button.clicked.connect(self.openFileDialog)
         layout.addWidget(self.ofile_button)
         
         self.show()
     
-    def openFileDialog():
-        filename = QFileDialog.getOpenFileName(w, 'Open File', '/')
+    def openFileDialog(self):
+        options = QFileDialog.Options()
+        files, _ = QFileDialog.getOpenFileNames(
+                self, 
+                "QFileDialog.getOpenFileNames()",
+                "",
+                "All Files (*);;Python Files (*.py)", options = options)
+
 def main():
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     main_window = MainWindow()
     app.exec_()
 

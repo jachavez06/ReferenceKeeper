@@ -1,1 +1,0 @@
-([('app', '/Volumes/Colosseum/Code/Python/Mac App/dist/app', 'EXECUTABLE')],)
