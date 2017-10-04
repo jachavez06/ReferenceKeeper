@@ -3,8 +3,9 @@
 import os
 import sys
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QVBoxLayout,
-                             QPushButton, QFileDialog)
-
+                             QPushButton, QFileDialog, QWidget, QInputDialog,
+                             QLineEdit, QHBoxLayout, QDialog)
+from PyQt5.QtCore import *
 
 class MainWindow(QMainWindow):
 
@@ -13,49 +14,62 @@ class MainWindow(QMainWindow):
 
         self.initUI()
 
-    # Defaults for main app window
     def initUI(self):               
-
         self.statusBar().showMessage('Ready')
-
         self.setGeometry(300, 300, 250, 150)
-        self.setWindowTitle('Statusbar')
-        
-        # Add layout
-        layout = QVBoxLayout()
-        
-        # Button
-        self.button = QPushButton('Test', self)
-        self.button.clicked.connect(self.close)
-        layout.addWidget(self.button)
-        
-        # Open File Button
-        self.ofile_button = QPushButton('Open', self)
-        self.ofile_button.move(100,0)
-        self.ofile_button.clicked.connect(self.openFileDialog)
-        layout.addWidget(self.ofile_button)
-        
-        self.show()
+        self.setWindowTitle('Reference Keeper')
+        self.show()        
+
+class MainWidget(QWidget):
     
-    def openFileDialog(self):
-        options = QFileDialog.Options()
-        files, _ = QFileDialog.getOpenFileNames(
-                self, 
-                "QFileDialog.getOpenFileNames()",
-                "",
-                "All Files (*);;Python Files (*.py)", options = options)
+    def __init__(self):
+        super().__init__()
+        
+        self.initUI()
+        
+        
+    def initUI(self):
+        
+        okButton = QPushButton("OK")
+        cancelButton = QPushButton("Cancel")
+        
+        okButton.clicked.connect(self.addReferenceDialog)
+        
+        hbox = QHBoxLayout()
+        hbox.addStretch(1)
+        hbox.addWidget(okButton)
+        hbox.addWidget(cancelButton)
 
+        vbox = QVBoxLayout()
+        vbox.addStretch(1)
+        vbox.addLayout(hbox)
+        
+        self.setLayout(vbox)    
+        
+        self.setGeometry(300, 300, 300, 150)
+        self.setWindowTitle('Buttons')    
+        self.show()
+
+    def addReferenceDialog(self):
+        d = QDialog()
+        b1 = QPushButton("ok",d)
+        b1.move(50,50)
+        d.setWindowTitle("Dialog")
+        d.setWindowModality(Qt.ApplicationModal)
+        d.exec_()
+     
+        
 def main():
-
     app = QApplication(sys.argv)
     main_window = MainWindow()
+    main_widget = MainWidget()
+    main_window.setCentralWidget(main_widget)
     app.exec_()
-
-
+    
 if __name__ == '__main__':
     main()
-    
-    
+
+ 
     # -----
     # Get filename using QFileDialog
     #filename = QFileDialog.getOpenFileName(w, 'Open File', '/')
